@@ -97,7 +97,7 @@ b  = constPar.q_max(2);
 r2 = (b-a).*rand(constPar.n_cos,1) + a;
 
 constPar.x0_in            = [r1;r2];                         % Initial values for the optimization variables
-constPar.regIndizes       = [2 6];                           % Dimensions of the reduced regressor matrix 
+constPar.regIndizes       = [2 6];  % Dimensions of the reduced regressor matrix 
 
 %% Test trajectory
 

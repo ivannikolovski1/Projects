@@ -36,7 +36,7 @@ clc
 constPar.test_trajectory = 0;
 
 % <<YOUR CODE HERE>>
-simOut      = sim(sl_Modellname, 'StopTime', '30'); 
+simOut      = sim(sl_Modellname, 'StopTime', '30');
 sl          = get_simulink_outputs(simOut, sl_Modellname);
 
 % Averages
@@ -69,6 +69,7 @@ end
 
 clc
 % <<YOUR CODE HERE>>
+
 aux_index = [-1,0];
 for create_F = 1:length(q_ref)
     aux_index = aux_index + 2;
@@ -85,15 +86,19 @@ for create_F = 1:length(q_ref)
 end
 
 beta_b_hat = inv(F_mat'*F_mat)*F_mat'*b_mat;
+
+
 %% << T3-C >> Torque reproduction based on found minimal-parameters
 % IMPORTANT: DO NOT change the code in this section!!!
 
 clc 
 figure
-
+%%%%%%%%%%%%%% changed
+points = size(sl.q_sim,1);
+tau_m = tau_m_avg;
+%%%%%%%%%%%%%%
 tau_hat = reshape(F_mat*beta_b_hat,constPar.noj,points); 
-points = size(sl.q_sim,1);%added
-tau_m = tau_m_avg;%added
+
 close all
 
 for i=1:constPar.noj
@@ -118,8 +123,12 @@ q       = sl.q_ref;
 qD      = sl.dq_ref;
 qDD     = sl.ddq_ref;
 tau     = sl.tau_m;
-points  = size(sl.q_sim,1);%changed
-tau_hat = reshape(RMIC_arm_inf_matrix(q, qD, qDD, points, constPar)*beta_b_hat,constPar.noj,points); 
+points  = size(sl.q_sim,1);
+%%%%% CHANGED
+% in the ideal world, we would already have a 10 dimension beta
+matrix_aux = RMIC_arm_inf_matrix(q, qD, qDD, points, constPar);
+%%%%% CHANGED
+tau_hat = reshape(matrix_aux(:,1:6)*beta_b_hat,constPar.noj,points); 
 
 close all
 figure
