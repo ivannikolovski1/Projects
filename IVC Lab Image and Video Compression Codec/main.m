@@ -183,7 +183,7 @@ First_Image = Video(:,:,:,1);
                 end
             end
             PSNR_foreman(f,scaleIdx)=calcPSNR(Video_rec(:,:,:,f),cur_im);
-    
+            imshow(uint8(cur_im));
         end
     end
 end
